@@ -1,17 +1,38 @@
-<?php namespace App\Models;
+<?php
 
-use CodeIgniter\Model;
+namespace App\Models;
 
-class Program_Studi_Model extends Model {
+use CodeIgniter\Database\ConnectionInterface;
+use CodeIgniter\Database\MySQLi\Connection;
+
+class Program_Studi_Model
+{
     private $table = 'prodi';
-    public function __construct()
+    public function __construct(ConnectionInterface &$db)
     {
-        
+        $this->builder = $this->db->table($this->table);
     }
 
-    public function get()
+    public function get($where = null)
     {
-        
-        return $this->db->table('prodi')->get();
+        if (!empty($where))
+            return $this->builder->getWhere($where);
+        else
+            return $this->builder->get();
+    }
+
+    public function insert($data)
+    {
+        return $this->builder->insert($data);
+    }
+
+    public function update($data, $where)
+    {
+        return $this->builder->update($data,$where);
+    }
+
+    public function delete($where)
+    {
+        return $this->builder->delete($where);
     }
 }
